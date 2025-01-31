@@ -1,0 +1,183 @@
+# **Database Schema and Data Generation Prompts**
+
+## **Departments Table**
+
+### **Task:**  
+Create a table labeled `Departments` with the following fields:  
+
+- `department_id` (Primary Key)  
+- `department_name`  
+- `description`  
+
+Label the departments for **Men’s, Women’s, and Kids’** sections.
+
+---
+
+## **Categories Table**
+
+### **Task:**  
+Create a `Categories` table with the following schema and populate it with 15 records:
+
+- `category_id` (Primary Key)  
+- `department_id` (Foreign Key referencing the `Departments` table)  
+- `category_name`  
+- `description`  
+
+### **Requirements:**  
+- You have three departments: **Men, Women, and Kids** (each with a corresponding `department_id`).  
+- Certain categories (like shoes, jackets, t-shirts, jeans) overlap across multiple departments, so create separate rows for each department’s version of that category.  
+- Some categories are department-specific (e.g., **suits for Men, dresses for Women**).  
+- Provide **meaningful, short descriptions** that match the category and department context.  
+- **Think like a clothing expert**: ensure the category names and descriptions align with typical retail offerings.  
+
+### **Example Category Distribution:**
+
+#### **Men (6 rows)**
+1. Shoes  
+2. Jackets  
+3. T-Shirts  
+4. Jeans  
+5. Suits  
+6. Activewear  
+
+#### **Women (6 rows)**
+7. Shoes  
+8. Jackets  
+9. T-Shirts  
+10. Jeans  
+11. Dresses  
+12. Skirts  
+13. Activewear  
+
+#### **Kids (6 rows)**
+14. Shoes  
+15. Jackets  
+16. T-Shirts  
+17. Jeans  
+18. Pants  
+19. Activewear  
+
+---
+
+## **Products Table**
+
+### **Task:**  
+Generate **two unique products per category** in each department, referencing the `Departments` and `Categories` tables. Populate the following fields:
+
+- `product_id` (Primary Key)  
+  - Use unique integer IDs (sequential or otherwise).  
+- `department_id` (Foreign Key referencing the `Departments` table)  
+  - Make sure each product is correctly associated with its department.  
+- `category_id` (Foreign Key referencing the `Categories` table)  
+  - Ensure each product belongs to the right category.  
+- `product_name`  
+  - Create a unique, **brand-savvy** name that matches the department/category context.  
+  - Example: `"The Classic Ballet Flat"` for **Women’s shoes**, `"Urban Explorer Chino"` for **Men’s pants**.  
+  - **No overlap of names between departments**—keep them distinct.  
+- `description`  
+  - A short **marketing-style** description for the product, referencing its features, style, or use case.  
+  - Example: `"A timeless leather ballet flat offering all-day comfort and sophistication."`  
+- `size`  
+  - For clothing items: **XS, S, M, L, XL**.  
+  - For shoes: **Numeric sizes from 5 to 10**.  
+  - Each product should include all relevant sizes.  
+- `color`  
+  - Each product must have one of every color: **white, black, grey, red, yellow, or green**.  
+  - Spread usage so that all colors appear across the product catalog.  
+- `price`  
+  - Assign a **realistic market price** for each product.  
+  - Examples:  
+    - Premium suit: **$120–$200**  
+    - Casual t-shirt: **$15–$30**  
+    - Shoes: **$40–$150**  
+
+### **Key Requirements:**
+- **Exactly two unique products per category** in each department.  
+- Include **all sizes that apply** (for clothing or shoes).  
+- **Each product should have one each color.  
+- **Product names should fit** the department/category context and not repeat.  
+- **Prices should be plausible** for the type of item and reflect market norms and should be the same price for each variant of one product.
+
+---
+
+## **Customers Table**
+
+### **Instruction:**  
+Generate **5,000 customer records** with the following columns (headers in the first row):
+
+- `customer_id` (Primary Key)  
+- `first_name` (Masked so only the first letter is shown, and all subsequent letters replaced by `#`).  
+  - Example: `"John"` → `"J###"`  
+- `last_name` (Masked similarly to first name).  
+  - Example: `"Smith"` → `"S####"`  
+- `email` (Mask everything before the `@`, preserving length and punctuation).  
+  - Example: `"jane_doe@gmail.com"` → `"####_###@gmail.com"`  
+- `country`  
+  - Must be one of: **USA, Canada, UK, France, Germany, or India**.  
+  - Distribution: **75% (3,750 rows) from USA**, and the remaining **25% split evenly** among other five countries (~250 each).  
+- `state` (for USA only)  
+  - Use valid two-letter state codes (e.g., **CA, NY, TX, FL**).  
+  - Leave blank if `country ≠ USA`.  
+  - Ensure `city` matches the state.  
+- `city` (Plausible city, consistent with country and state).  
+- `street` (Plausible street address, e.g., `"123 Maple St."`).  
+- `gender`  
+  - **Female** should appear most frequently, followed by **Male**.  
+  - About **25% of rows should have gender blank** to represent missing demographic data.  
+- `marital_status`  
+  - **Single, Married, or N/A**.  
+  - About **25% of rows left blank**.  
+- `has_children`  
+  - **Yes or No**.  
+  - About **25% left blank**.  
+- `income_level`  
+  - **Low (< $20,000)**  
+  - **Middle ($20,000 - $50,000)**  
+  - **Upper Middle ($50,000 - $100,000)**  
+  - **High (> $100,000)**  
+  - About **25% left blank**.  
+- `age` (Must align correctly with `age_group`).  
+- `age_group`  
+  - **Children & Teenagers (12–17)**  
+  - **Young Adults (18–29)**  
+  - **Adults (30–44)**  
+  - **Middle-aged Adults (45–59)**  
+  - **Seniors (60+)**  
+
+### **Additional Details:**
+- **Exactly 5,000 records**  
+- **USA vs. Other Countries: 75% vs. 25% distribution**  
+- **Ensure diverse demographics**  
+- **Format: CSV (comma-separated) with headers in the first row**  
+
+---
+
+## **Transactions Table**
+
+### **Goal:**  
+Create a `Transactions` table referencing the existing `Customers` and `Products` tables. Generate **realistic transaction data** spanning the **last two years**.
+
+### **Transactions Table Schema:**
+- `transaction_id` (Unique ID, starting from a random value).  
+- `transaction_date` (Dates spanning the last **24 months**).  
+- `customer_id` (Foreign Key referencing `Customers`).  
+- `product_id` (Foreign Key referencing `Products`).  
+- `quantity` (Number of items purchased).  
+- `price` (Unit price of the product in this transaction).  
+- `total_value` (`quantity * price`).  
+- `transaction_status` (**95% closed, 5% canceled**).  
+
+### **Additional Requirements:**
+- **At least one transaction for every customer**.  
+- **30% of transactions should involve repeat customers**.  
+- **Align purchases with demographics** (e.g., income level, gender, family status, climate).  
+- **Higher-income customers buy premium products & multiple items per transaction**.  
+- **Sorting Order:**  
+  - `transaction_date` should be **ascending**.  
+  - **Multi-item purchases** should have the **same `transaction_id`, `transaction_date`, and `customer_id`**.  
+  - Each product in the same transaction gets its **own row**.
+
+---
+
+
+
