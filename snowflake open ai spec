@@ -1,0 +1,77 @@
+openapi: 3.1.0
+info:
+  title: Snowflake Statements API
+  version: 1.0.0
+  description: API for executing SQL statements in Snowflake with OAuth authentication.
+
+servers:
+  - url: 'https://ptb39397.us-east-1.snowflakecomputing.com/api/v2'
+
+paths:
+  /statements:
+    post:
+      summary: Execute a SQL statement in Snowflake
+      description: This endpoint allows users to execute a SQL statement in Snowflake, specifying the warehouse and role to use.
+      operationId: runQuery
+      tags:
+        - Statements
+      security:
+        - oauth2: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                warehouse:
+                  type: string
+                  description: The Snowflake warehouse to use for the statement execution.
+                  example: ALT_GENERIC
+                role:
+                  type: string
+                  description: The Snowflake role to assume for the statement execution.
+                  example: GPT_ROLE
+                statement:
+                  type: string
+                  description: The SQL statement to execute.
+                  example: SELECT * FROM SCORING_SEGMENTATION_DB.UPDATED_SALES_TRANSCATION_RAW_DATA LIMIT 10
+              required:
+                - warehouse
+                - role
+                - statement
+      responses:
+        '200':
+          description: Successfully executed SQL statement.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    additionalProperties: true
+        '400':
+          description: Bad request, invalid SQL statement or missing parameters.
+        '401':
+          description: Authentication error, invalid OAuth credentials.
+        '500':
+          description: Internal server error.
+
+components:
+  schemas: {}
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://ptb39397.us-east-1.snowflakecomputing.com/oauth/authorize'
+          tokenUrl: 'https://ptb39397.us-east-1.snowflakecomputing.com/oauth/token-request'
+          scopes:
+            session:role:GPT_ROLE: ""
+
+security:
+  - oauth2: []
+
