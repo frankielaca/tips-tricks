@@ -82,3 +82,4 @@ Client secret: pEhYN26mNLwBKhG6iw9xDBklE8PKpHZzMFX+n0CpVS4=
 client id: qROab9hEHk1b9Vt1JqPK2BVsKEQ=
 auth url: https://ptb39397.us-east-1.snowflakecomputing.com/oauth/authorize
 token url: https://ptb39397.us-east-1.snowflakecomputing.com/oauth/token-request
+session:role:GPT_ROLE
